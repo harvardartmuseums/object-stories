@@ -5,7 +5,7 @@
 ## Developer Notes
 
 ### Features
-* [Express 4](https://expressjs.com/) with [Handlebars](https://handlebarsjs.com/) server-side template engine
+* [Express 4](https://expressjs.com/) with [Handlebars](https://handlebarsjs.com/) + [Handlebars Helpers](https://www.npmjs.com/package/handlebars-helpers) server-side template engine
 * [HAM API server-Side library](https://www.npmjs.com/package/@harvardartmuseums/ham)
 * [Bootstrap 5.3](https://getbootstrap.com/docs/5.3/getting-started/introduction/) via CDN
 
