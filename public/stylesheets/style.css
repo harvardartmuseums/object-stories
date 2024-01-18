@@ -1,8 +1,14 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  line-height: 1.5;
 }
 
 a {
   color: #00B7FF;
+}
+
+mark {
+  background-color: rgba(173, 216, 230, 0.5); /* Light blue with 30% transparency */
+  color: inherit; /* Inherit the text color from the parent */
 }

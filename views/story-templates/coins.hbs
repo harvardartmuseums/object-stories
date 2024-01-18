@@ -5,38 +5,23 @@
                 <img src="{{data.images.[0].baseimageurl}}?width=200">
             </p>
             <p>
-                I am a <mark>{{data.worktypes.[0].worktype}}</mark>. I go by <mark>{{data.title}}</mark>{{#if (gt data.titlescount 1)}}, and people have also referred to me by<mark>
-                    {{#each data.titles}}
-                        {{this.title}}{{#unless @last}}, {{/unless}}
-                    {{/each}}</mark>
-                {{/if}}.
-                I came to life in <mark>{{data.dated}}</mark>{{#isTruthy data.period}} in the <mark>{{data.period}}</mark> period{{/isTruthy}}{{#isTruthy data.places}} in <mark>{{data.places.[0].displayname}}</mark>{{/isTruthy}}.
-                {{#isTruthy data.people}}
+                I am a <mark>{{data.worktypes.[0].worktype}}</mark>. I go by <mark>{{data.title}}</mark>. I was created in <mark>{{data.dated}}</mark> in <mark>{{data.places.[0].displayname}}</mark>.
                 <mark>
                 {{#each data.people}}
                     {{this.name}}{{#unless @last}}, {{/unless}}
                 {{/each}}
-                </mark> 
-                played a pivotal role in my creation.
-                {{/isTruthy}}
-                I belong to the <mark>{{data.culture}}</mark> culture. I’m made of <mark>{{data.medium}}</mark>{{#isTruthy data.technique}} in the technique of <mark>{{data.technique}}</mark>{{/isTruthy}}.
-                {{#isTruthy data.dimNoFrame}}
-                I measure <mark>{{data.dimNoFrame}}</mark>.
-                {{else}}
-                I measure <mark>{{data.dimensions}}</mark>.
-                {{/isTruthy}}
+                </mark> played a pivotal role in my creation.
+                I stand as a testament to the prosperity of the <mark>{{data.culture}}</mark> culture in the <mark>{{data.period}}</mark> period. I’m made of <mark>{{data.medium}}</mark> in the technique of <mark>{{data.technique}}</mark>. I weigh <mark>{{data.dimensions}}</mark> and I was worth a <mark>{{data.details.coins.denomination}}</mark>.
+                On the obverse side, my design captures: <mark>{{data.coinObv}}</mark> 
+                The reverse side depicts: <mark>{{data.coinRev}}</mark> 
             </p>
             <p>
                 {{#isTruthy data.provenance}}
-                    {{#if (lte data.provenancecount 3)}}
                     I used to belong to <mark>{{data.provenance}}</mark>.
-                    {{else}}
-                    I used to belong to <mark>{{data.provenancecount}}</mark> past owners.
-                    {{/if}}
                 {{/isTruthy}}
                 {{#isTruthy data.accessionyear}}I came into the collection of the Harvard Art Museums in <mark>{{data.accessionyear}}</mark>, and{{/isTruthy}}I am now part of the <mark>{{data.division}}</mark> in my new home. 
                 {{#if (eq data.publicationcount 1)}}
-                    I have been discussed in <mark>{{data.publications.[0].title}}</mark> {{#isTruthy data.publications.[0].publicationyear}}in <mark>{{data.publications.[0].publicationyear}}</mark>{{/isTruthy}}.
+                    I have been discussed in <mark>{{data.publications.[0].title}}</mark> {{#isTruthy data.publications.[0].publicationyear}}in <mark>{{data.publications.[0].publicatonyear}}</mark>{{/isTruthy}}.
                 {{/if}}
                 {{#if (gt data.publicationcount 1)}}
                     I’m very popular, as more than <mark>{{data.publicationcount}}</mark> people have talked about me in their publications. 
