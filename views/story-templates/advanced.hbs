@@ -4,25 +4,32 @@
             <p>
                 <img src="{{data.images.[0].baseimageurl}}?width=200">
             </p>
+
             <p>
-            {{data.pose}}
-            Gazing beyond what the frame confines, 
-            May I see ...
-            </p>
-        
-            <p>
-            - I cannot help but wonder—what is he painting on this huge silk scroll? Is my gaze too [direct and scrutinizing/shy/aloof]  
-            - I gaze into the artist [with wide-open eyes], yet my mind wanders and cannot help but think about what is on his canvas.  
+            {{#isTruthy data.pose}}
+            {{#gt data.pose.Yaw 45}}
+            Gazing beyond what the frame confines in the far right, 
+            I see ...
+            {{else}}
+                {{#gt data.pose.Yaw -30}}
+                    {{#lt data.pose.Yaw 30}}
+                    I gaze directly into the artist, my mind wandering, and I cannot help but think about what is on his canvas.
+                    {{/lt}}
+                {{/gt}}
+                {{#lt data.pose.Yaw -45}}
+                Gazing beyond what the frame confines in the far left, 
+                I see ...
+                {{/lt}}
+            {{/gt}}
+            {{/isTruthy}}
             </p>
 
             <p>
-            - Look here! I see cups and pans! Did the Ancient Greeks use it to [cook]?
-            - Haha no, look at the label, these are actually [drinking cups for the symposium, their dinner party]
+            {{#if (eq data.division "Asian and Mediterranean Art")}}
+            {{#isTruthy data.places}}From <mark>{{data.places.[0].displayname}}</mark>, {{/isTruthy}}after a long journey I arrived in a new home. It is such a different place—I’ve never seen such bright light and open space that endlessly unfolds. For the first time I live in {{#if (eq data.classification "Paintings")}} <mark>a frame</mark> {{else}} <mark>a case</mark> {{/if}}, which someone tailored exclusively for me. They are trying to blend me into the rest of the room with other objects that look familiar to me. Curious faces, alien and familiar, stop in front of me day to day and examine me so closely. I have never seen, or been seen, by so many people. I have been brought to a place that they call “museums.”
+            {{/if}}
             </p>
 
-            <p>
-            After a long journey I arrived in a new home, along with X. It is such a different place—I’ve never seen such bright light and open space that endlessly unfolds. For the first time I live in [a frame/case], which someone tailored exclusively for me. They are trying to blend me into the rest of the room with other objects that look familiar to me. Curious faces, alien and familiar, stop in front of me day to day and examine me so closely. I have never seen, or been seen, by so many people. I have been brought to a place that they call “museums.”
-            </p>
         </div>
         <div class="col-6">
             <pre>{{data.raw}}</pre>

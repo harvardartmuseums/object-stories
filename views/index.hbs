@@ -1,4 +1,35 @@
 <div class="container-fluid">
     <h1 class="display-1">{{about.title}}</h1>
     <p class="lead">{{about.description}}</p>
+    <p>
+        Want a new perspective on an object? This is a project that transforms facts about objects into narrative versions of the art pages on the museum’s website. When you hit a different route, you can swap story templates of and see different narrative or creative versions of the object page. 
+    </p>
+    <p>
+        Currently, the website has two versions of stories. The first version renders the object through the two basic Mad Libs templates, depending on their object type (coins or non-coins). 
+    </p>
+    <p>
+        An example of a coin: http://localhost:3000/object/168614
+    </p>
+    <p>
+        An example of a sculpture: http://localhost:3000/object/292540
+    </p>
+    <p>
+        An example of a painting: http://localhost:3000/object/230457
+    </p>
+    <p>
+        To check out any objects from the collection, follow the URL template: /object/OBJECTID
+    </p>
+    <br>
+    <p>
+        The second version consists of creative narrative fragments. One fragment is about detecting the eye gaze direction of the figure in a portrait and displaying short poetic lines describing them. The other fragment is a first-person narrative of an object's history of displacement. 
+    </p>
+    <p>
+        An example of a portrait that looks to the right: http://localhost:3000/object/178609/coolpage
+    </p>
+    <p>
+        An example of an object with a history of displacement: http://localhost:3000/object/209167/coolpage
+    </p>
+    <p>
+        To swap to this version of object stories, just add /coolpage to the end of your URL above, namely in the format: /object/OBJECTID/coolpage
+    </p>
 </div>

@@ -11,7 +11,7 @@
                     {{this.name}}{{#unless @last}}, {{/unless}}
                 {{/each}}
                 </mark> played a pivotal role in my creation.
-                I stand as a testament to the prosperity of the <mark>{{data.culture}}</mark> culture in the <mark>{{data.period}}</mark> period. I’m made of <mark>{{data.medium}}</mark> in the technique of <mark>{{data.technique}}</mark>. I weigh <mark>{{data.dimensions}}</mark> and I was worth a <mark>{{data.details.coins.denomination}}</mark>.
+                I stand as a testament to the prosperity of the <mark>{{data.culture}}</mark> culture in the <mark>{{data.period}}</mark> period. I’m made {{#isTruthy data.medium}}of <mark>{{data.medium}}</mark>{{/isTruthy}}{{#isTruthy data.technique}} in the technique of <mark>{{data.technique}}</mark>{{/isTruthy}}. I weigh <mark>{{data.dimensions}}</mark> and I was worth a <mark>{{data.details.coins.denomination}}</mark>.
                 On the obverse side, my design captures: <mark>{{data.coinObv}}</mark> 
                 The reverse side depicts: <mark>{{data.coinRev}}</mark> 
             </p>

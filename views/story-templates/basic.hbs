@@ -19,7 +19,7 @@
                 </mark> 
                 played a pivotal role in my creation.
                 {{/isTruthy}}
-                I belong to the <mark>{{data.culture}}</mark> culture. I’m made of <mark>{{data.medium}}</mark>{{#isTruthy data.technique}} in the technique of <mark>{{data.technique}}</mark>{{/isTruthy}}.
+                I belong to the <mark>{{data.culture}}</mark> culture. I’m made {{#isTruthy data.medium}}of <mark>{{data.medium}}</mark>{{/isTruthy}}{{#isTruthy data.technique}} in the technique of <mark>{{data.technique}}</mark>{{/isTruthy}}.
                 {{#isTruthy data.dimNoFrame}}
                 I measure <mark>{{data.dimNoFrame}}</mark>.
                 {{else}}
