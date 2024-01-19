@@ -10,7 +10,7 @@
                         {{this.title}}{{#unless @last}}, {{/unless}}
                     {{/each}}</mark>
                 {{/if}}.
-                I came to life in <mark>{{data.dated}}</mark>{{#isTruthy data.period}} in the <mark>{{data.period}}</mark> period{{/isTruthy}}{{#isTruthy data.places}} in <mark>{{data.places.[0].displayname}}</mark>{{/isTruthy}}.
+                I came to life in <mark>{{data.dated}}</mark>{{#isTruthy data.period}} in the <mark>{{data.period}}</mark>{{/isTruthy}}{{#isTruthy data.places}} in <mark>{{data.places.[0].displayname}}</mark>{{/isTruthy}}.
                 {{#isTruthy data.people}}
                 <mark>
                 {{#each data.people}}
