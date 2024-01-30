@@ -1,6 +1,7 @@
 # Object Stories
 
 ## About
+Object Stories is a research project from the Department of Digital Infrastructure and Emerging Technology at <a href="https://hvrd.art">Harvard Art Museums</a>. This initial version was built during a three week sprint in January 2024.
 
 ## Developer Notes
 
