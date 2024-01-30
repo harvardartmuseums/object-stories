@@ -28,7 +28,10 @@
             {{#isTruthy data.places}}From <mark>{{data.places.[0].displayname}}</mark>, {{/isTruthy}}after a long journey I arrived in a new home. It is such a different place—I’ve never seen such bright light and open space that endlessly unfolds. For the first time I live in {{#if (eq data.classification "Paintings")}} <mark>a frame</mark> {{else}} <mark>a case</mark> {{/if}}, which someone tailored exclusively for me. They are trying to blend me into the rest of the room with other objects that look familiar to me. Curious faces, alien and familiar, stop in front of me day to day and examine me so closely. I have never seen, or been seen, by so many people. I have been brought to a place that they call “museums.”
             {{/if}}
             </p>
-
+            <hr>
+            <p>
+                <a href="{{data.url}}">Read the official version of this object on the HAM website</a>
+            </p>
         </div>
         <div class="col-6">
             <pre>{{data.raw}}</pre>
