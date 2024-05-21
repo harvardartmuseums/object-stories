@@ -1,0 +1,46 @@
+<div class="row">
+    {{#each data}}
+        <div class="col-2 img-slide" data-begindate="{{this.begindate}}" data-enddate="{{this.enddate}}">
+            <p>
+                <img src="{{this.poster.imageurl}}:IMAGE/full/!200,200/0/default.jpg" alt="Poster image">
+            </p>
+        </div>
+    {{/each}}
+</div>
+
+<!-- Slider -->
+<div class="slider-container">
+    <input type="range" id="pi_input" min="2014" max="2024" step="1" value="2014" />
+    <p>Year: <output id="value">2014</output></p>
+</div>
+
+<!-- JavaScript to toggle images on and off based on the time in the slider -->
+<script>
+const value = document.querySelector("#value");
+const input = document.querySelector("#pi_input");
+const images = document.querySelectorAll('.img-slide');
+
+// Function to update the displayed images based on the selected year
+function updateImages(displayYear) {
+    images.forEach((img) => {
+        const beginYear = parseInt(img.getAttribute('data-begindate'));
+        const endYear = parseInt(img.getAttribute('data-enddate'));
+        // Check if the display year matches begin year or end year
+        if (displayYear >= beginYear && displayYear <= endYear) {
+            img.style.display = 'block'; // Show the image
+        } else {
+            img.style.display = 'none'; // Hide the image
+        }
+    });
+}
+
+// Set initial images display based on the initial slider value
+updateImages(parseInt(input.value));
+
+// Update displayed images whenever the slider value changes
+input.addEventListener('input', (event) => {
+    const selectedYear = parseInt(event.target.value);
+    value.textContent = selectedYear;
+    updateImages(selectedYear);
+});
+</script>

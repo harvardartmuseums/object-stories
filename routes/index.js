@@ -7,6 +7,11 @@ let applicationInfo = {
   description: 'Experimental templates for art'
 };
 
+let applicationInfo_new = {
+  title: 'Family Reunion',
+  description: 'Three galleries in ten years'
+};
+
 let ham = new HAM(process.env.HAM_APIKEY);
 
 /* GET home page. */
@@ -88,6 +93,19 @@ router.get('/object/:id/coolpage', async function(req, res, next) {
   object.raw = JSON.stringify(object, null, "\t");
 
   res.render('story-templates/advanced', {about: applicationInfo, data: object});
+});
+
+router.get('/poster', async function(req, res, next) {
+  let params =  {
+    venue: 'HAM',
+    after: 'begindate:2014-11-15',
+    size: 100,
+    sort : 'chronological'
+  };
+  let exhibition = await ham.Exhibitions.search(params);
+  exhibition = exhibition.records;
+
+  res.render('family-reunion/poster', {layout: 'layout-family-reunion.hbs', about: applicationInfo_new, data: exhibition});
 });
 
 // router.get('/object/:id', async function(req, res, next) {

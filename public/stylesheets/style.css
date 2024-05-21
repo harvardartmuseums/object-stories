@@ -12,3 +12,18 @@ mark {
   background-color: rgba(173, 216, 230, 0.5); /* Light blue with 30% transparency */
   color: inherit; /* Inherit the text color from the parent */
 }
+
+#pi_input {
+  width: 100%; /* Makes the slider span the full width of its container */
+  display: block; /* Ensures it takes up the full line */
+  margin: 20px 0; /* Adds some space above and below the slider */
+}
+
+.slider-container {
+  position: fixed; /* Keeps the container fixed */
+  bottom: 0; /* Positions the container at the bottom of the viewport */
+  left: 0; /* Aligns the container to the left */
+  width: 100%; /* Ensures the container spans the full width of the viewport */
+  padding: 10px 50px; 
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.2); 
+}
