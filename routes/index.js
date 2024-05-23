@@ -105,6 +105,26 @@ router.get('/poster', async function(req, res, next) {
   let exhibition = await ham.Exhibitions.search(params);
   exhibition = exhibition.records;
 
+  // process date here
+
+  for (let i = 0; i < exhibition.length; i++){
+    let begin = exhibition[i].begindate.split("-");
+    exhibition[i].beginYear = parseInt(begin[0]);
+    exhibition[i].beginMonth = parseInt(begin[1]);
+    
+    let end = exhibition[i].enddate.split("-");
+    exhibition[i].endYear = parseInt(end[0]);
+    exhibition[i].endMonth = parseInt(end[1]);
+  }
+
+  // process and delete the exhibits not on floor 3
+  
+  function notOnFloorThree(exhibit) {
+    return exhibit.venues[0].galleries[0].floor === "3";
+  }
+
+  exhibition = exhibition.filter(notOnFloorThree);
+
   res.render('family-reunion/poster', {layout: 'layout-family-reunion.hbs', about: applicationInfo_new, data: exhibition});
 });
 
