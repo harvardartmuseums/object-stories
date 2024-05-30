@@ -14,6 +14,10 @@ router.get('/', async function(req, res, next) {
   res.render('family-reunion/index', { about: applicationInfo });
 });
 
+router.get('/floor-3', async function(req, res, next) {
+  res.render('family-reunion/floor-3', {about: applicationInfo});
+})
+
 router.get('/poster', async function(req, res, next) {
   let params =  {
     venue: 'HAM',
