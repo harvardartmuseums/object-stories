@@ -25,3 +25,79 @@
     </g>
 </svg>
 
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+
+<script>
+// Simulate DOM.uid
+const DOM = {
+    uid: (() => {
+        let count = 0;
+        return (name) => {
+            return { id: `${name}-${++count}` };
+        };
+    })()
+};
+
+async function floorplanLayout() {
+    const structuredData = await d3.json('/family-reunion/data');
+    {{!-- filter the data here by time --}}
+    populateFloor(structuredData);
+
+    function populateFloor(data) {
+        const svg = d3.select("svg");
+
+        for (const roomData of data.children) {
+            var room = d3.select(`#rooms path[data-room="${roomData.name}"]`);
+            if (!room.empty()) {
+                var roomDims = room.node().getBBox();
+
+                const color = d3.scaleOrdinal(data.children.map(d => d.name), d3.schemeTableau10);
+
+                const root = d3.treemap()
+                    .tile(d3.treemapSquarify) 
+                    .size([roomDims.width, roomDims.height])
+                    .padding(1)
+                    .round(true)
+                    (d3.hierarchy(roomData)
+                        .sum(d => d.size)
+                        .sort((a, b) => b.value - a.value));
+
+                const leaf = svg.append("g")
+                    .attr("data-room", roomData.name)
+                    .selectAll("g")
+                    .data(root.leaves())
+                    .join("g")
+                    .attr("transform", d => `translate(${roomDims.x + d.x0},${roomDims.y + d.y0})`);
+
+                leaf.append("title")
+                    .text(d => `${d.ancestors().reverse().map(d => d.data.name).join("/")}\n${d3.format(",d")(d.value)}`);
+
+                leaf.append("rect")
+                    .attr("id", d => (d.leafUid = DOM.uid("leaf")).id)
+                    .attr("fill", d => { while (d.depth > 1) d = d.parent; return color(d.data.name); })
+                    .attr("fill-opacity", 0.6)
+                    .attr("width", d => d.x1 - d.x0)
+                    .attr("height", d => d.y1 - d.y0);
+                    {{!-- append mouse stuff --}}
+
+                leaf.append("clipPath")
+                    .attr("id", d => (d.clipUid = DOM.uid("clip")).id)
+                    .append("use")
+                    .attr("xlink:href", d => `#${d.leafUid.id}`);
+
+                leaf.append("text")
+                    .attr("clip-path", d => `url(#${d.clipUid.id})`)
+                    .selectAll("tspan")
+                    .data(d => d.data.name.split(/(?=[A-Z][a-z])|\s+/g).concat(d3.format(",d")(d.value)))
+                    .join("tspan")
+                    .attr("x", 3)
+                    .attr("y", (d, i, nodes) => `${(i === nodes.length - 1) * 0.3 + 1.1 + i * 0.9}em`)
+                    .attr("fill-opacity", (d, i, nodes) => i === nodes.length - 1 ? 0.7 : null)
+                    .text(d => d);
+            }
+        }
+    }
+}
+
+floorplanLayout();
+</script>
