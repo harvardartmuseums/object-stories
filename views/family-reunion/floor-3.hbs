@@ -1,4 +1,5 @@
 <h2>Floor 3</h2>
+<div id="scrubber-container"></div>
 
 <svg xmlns="http://www.w3.org/2000/svg" width="1194" height="991" viewBox="0 0 1194 991">
     <g id="rooms">
@@ -38,9 +39,23 @@ const DOM = {
     })()
 };
 
+dates = Array.from({length: 121}, (_, i) => {
+    const date = new Date(2014, 10); 
+    date.setMonth(date.getMonth() + i); 
+    return date;
+});
+
+const scrubber = Scrubber(dates, {
+    delay: 200,
+    loop: false,
+    format: date => date.toLocaleString("en", {month: 'long', year: 'numeric'}),
+    onChange: updateOpacity
+})
+
+document.getElementById('scrubber-container').append(scrubber);
+
 async function floorplanLayout() {
     const structuredData = await d3.json('/family-reunion/data');
-    {{!-- filter the data here by time --}}
     populateFloor(structuredData);
 
     function populateFloor(data) {
@@ -75,7 +90,9 @@ async function floorplanLayout() {
                 leaf.append("rect")
                     .attr("id", d => (d.leafUid = DOM.uid("leaf")).id)
                     .attr("fill", d => { while (d.depth > 1) d = d.parent; return color(d.data.name); })
-                    .attr("fill-opacity", 0.6)
+                    .attr("fill-opacity", 0)
+                    .attr("data-begindate", d => d.data.begindate)
+                    .attr("data-enddate", d => d.data.enddate)
                     .attr("width", d => d.x1 - d.x0)
                     .attr("height", d => d.y1 - d.y0);
                     {{!-- append mouse stuff --}}
@@ -99,5 +116,102 @@ async function floorplanLayout() {
     }
 }
 
+function updateOpacity(date) {
+    d3.selectAll("rect").each(function() {
+    const rect = d3.select(this);
+    const begindate = new Date(rect.attr("data-begindate"));
+    const enddate = new Date(rect.attr("data-enddate"));
+
+    if (date >= begindate && date <= enddate) {
+        rect.attr("fill-opacity", 0.6);
+    } else {
+        rect.attr("fill-opacity", 0.1);
+    }
+    });
+}
+
 floorplanLayout();
+
+
+// Scrubber code from d3
+function Scrubber(values, {
+    format = value => value,
+    initial = 0,
+    direction = 1,
+    delay = null,
+    autoplay = true,
+    loop = true,
+    loopDelay = null,
+    alternate = false
+} = {}) {
+    values = Array.from(values);
+    const form = document.createElement("form");
+    form.style = "font: 12px var(--sans-serif); font-variant-numeric: tabular-nums; display: flex; height: 33px; align-items: center;";
+    form.innerHTML = `
+        <button name="b" type="button" style="margin-right: 0.4em; width: 5em;"></button>
+        <label style="display: flex; align-items: center;">
+            <input name="i" type="range" min="0" max="${values.length - 1}" value="${initial}" step="1" style="width: 180px;">
+            <output name="o" style="margin-left: 0.4em;"></output>
+        </label>
+    `;
+    let frame = null;
+    let timer = null;
+    let interval = null;
+    function start() {
+        form.b.textContent = "Pause";
+        if (delay === null) frame = requestAnimationFrame(tick);
+        else interval = setInterval(tick, delay);
+    }
+
+    function stop() {
+        form.b.textContent = "Play";
+        if (frame !== null) cancelAnimationFrame(frame), frame = null;
+        if (timer !== null) clearTimeout(timer), timer = null;
+        if (interval !== null) clearInterval(interval), interval = null;
+    }
+
+    function running() {
+        return frame !== null || timer !== null || interval !== null;
+    }
+
+    function tick() {
+        if (form.i.valueAsNumber === (direction > 0 ? values.length - 1 : direction < 0 ? 0 : NaN)) {
+            if (!loop) return stop();
+            if (alternate) direction = -direction;
+            if (loopDelay !== null) {
+                if (frame !== null) cancelAnimationFrame(frame), frame = null;
+                if (interval !== null) clearInterval(interval), interval = null;
+                timer = setTimeout(() => (step(), start()), loopDelay);
+                return;
+            }
+        }
+        if (delay === null) frame = requestAnimationFrame(tick);
+        step();
+    }
+
+    function step() {
+        form.i.valueAsNumber = (form.i.valueAsNumber + direction + values.length) % values.length;
+        form.i.dispatchEvent(new CustomEvent("input", { bubbles: true }));
+    }
+
+    form.i.oninput = event => {
+        if (event && event.isTrusted && running()) stop();
+        form.value = values[form.i.valueAsNumber];
+        form.o.value = format(form.value, form.i.valueAsNumber, values);
+        updateOpacity(form.value);
+    };
+
+    form.b.onclick = () => {
+        if (running()) return stop();
+        direction = alternate && form.i.valueAsNumber === values.length - 1 ? -1 : 1;
+        form.i.valueAsNumber = (form.i.valueAsNumber + direction) % values.length;
+        form.i.dispatchEvent(new CustomEvent("input", { bubbles: true }));
+        start();
+    };
+
+    form.i.oninput();
+    if (autoplay) start();
+    else stop();
+    return form;
+}
 </script>

@@ -116,7 +116,7 @@ router.get('/data', async function(req, res, next) {
                   structuredData.children.push(existingGallery);
               }
               let exhibitionSize = exhibit.objectcount;
-              existingGallery.children.push({ name: exhibit.title, size: exhibitionSize });
+              existingGallery.children.push({ name: exhibit.title, size: exhibitionSize, begindate: exhibit.begindate, enddate: exhibit.enddate });
           });
       }});
   });
