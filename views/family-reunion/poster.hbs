@@ -1,3 +1,7 @@
+{{!-- This code is an exercise to display all the exhibition posters on the screen 
+with a hardcoded time slider that toggles the posters on and off as the time changes. 
+An updated version of this is integrated into visualizations in the two floor-3 views. --}}
+
 <div class="row">
     {{#each data}}
         <div class="col-2 img-slide" data-beginYear="{{this.beginYear}}" data-beginMonth="{{this.beginMonth}}" data-endYear="{{this.endYear}}" data-endMonth="{{this.endMonth}}">
@@ -8,51 +12,58 @@
     {{/each}}
 </div>
 
-<!-- Slider -->
+<!-- Slider container for selecting the date -->
 <div class="slider-container">
-    <input type="range" id="pi_input" min="0" max="120" step="1" value = "0" />
+    <!-- Input range for the slider -->
+    <input type="range" id="pi_input" min="0" max="120" step="1" value="0" />
+    <!-- Display selected date -->
     <p><output id="value">November 2014</output></p>
 </div>
 
 <!-- JavaScript to toggle images on and off based on the time in the slider -->
 <script>
-const value = document.querySelector("#value");
-const input = document.querySelector("#pi_input");
-const images = document.querySelectorAll('.img-slide');
+    // Get references to the slider output element, input element, and all image slides
+    const value = document.querySelector("#value");
+    const input = document.querySelector("#pi_input");
+    const images = document.querySelectorAll('.img-slide');
 
-function getSliderMonthYear(sliderValue) {
-    const baseYear = 2014;
-    const baseMonth = 10;  
-    const date = new Date(baseYear, baseMonth + parseInt(sliderValue));
-    console.log("Calculated Date from Slider Value (" + sliderValue + "):", date);
-    return date;
-}
+    // Function to calculate the month and year from the slider value
+    function getSliderMonthYear(sliderValue) {
+        const baseYear = 2014;
+        const baseMonth = 10; // November is month 10 in JavaScript Date (0-indexed)
+        const date = new Date(baseYear, baseMonth + parseInt(sliderValue));
+        console.log("Calculated Date from Slider Value (" + sliderValue + "):", date);
+        return date;
+    }
 
-function updateImages(month, year) {
-    images.forEach((img) => {
-        const beginYear = parseInt(img.getAttribute('data-beginYear'));
-        const endYear = parseInt(img.getAttribute('data-endYear'));
-        const beginMonth = parseInt(img.getAttribute('data-beginMonth')) - 1; 
-        const endMonth = parseInt(img.getAttribute('data-endMonth')) - 1;
+    // Function to update image visibility based on the calculated month and year
+    function updateImages(month, year) {
+        images.forEach((img) => {
+            // Get the beginning and ending date attributes from the image element
+            const beginYear = parseInt(img.getAttribute('data-beginYear'));
+            const endYear = parseInt(img.getAttribute('data-endYear'));
+            const beginMonth = parseInt(img.getAttribute('data-beginMonth')) - 1; // Convert to 0-indexed month
+            const endMonth = parseInt(img.getAttribute('data-endMonth')) - 1; // Convert to 0-indexed month
 
-        if ((year > beginYear || (year === beginYear && month >= beginMonth)) &&
-            (year < endYear || (year === endYear && month <= endMonth))) {
-            img.style.display = 'block'; // Show the image
-        } else {
-            img.style.display = 'none'; // Hide the image
-        }
+            // Check if the current date falls within the image's date range
+            if ((year > beginYear || (year === beginYear && month >= beginMonth)) &&
+                (year < endYear || (year === endYear && month <= endMonth))) {
+                img.style.display = 'block'; // Show the image
+            } else {
+                img.style.display = 'none'; // Hide the image
+            }
+        });
+    }
+
+    // Set initial image display based on the initial slider value
+    let initialDate = getSliderMonthYear(parseInt(input.value));
+    updateImages(initialDate.getMonth(), initialDate.getFullYear());
+
+    // Update displayed images whenever the slider value changes
+    input.addEventListener('input', (event) => {
+        const date = getSliderMonthYear(parseInt(event.target.value));
+        const options = { month: 'long', year: 'numeric' };
+        value.textContent = date.toLocaleDateString('en-US', options); 
+        updateImages(date.getMonth(), date.getFullYear()); 
     });
-}
-
-// Set initial images display based on the initial slider value
-let initialDate = getSliderMonthYear(parseInt(input.value));
-updateImages(initialDate.getMonth(), initialDate.getFullYear());
-
-// Update displayed images whenever the slider value changes
-input.addEventListener('input', (event) => {
-    const date = getSliderMonthYear(parseInt(event.target.value));
-    const options = { month: 'long', year: 'numeric' };
-    value.textContent = date.toLocaleDateString('en-US', options);
-    updateImages(date.getMonth(), date.getFullYear());
-});
 </script>
