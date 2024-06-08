@@ -39,12 +39,14 @@ const DOM = {
     })()
 };
 
+// Create dates object for the time slider later
 dates = Array.from({length: 121}, (_, i) => {
     const date = new Date(2014, 10); 
     date.setMonth(date.getMonth() + i); 
     return date;
 });
 
+// Creating and configuring the scrubber (time slider)
 const scrubber = Scrubber(dates, {
     delay: 200,
     loop: false,
@@ -52,20 +54,28 @@ const scrubber = Scrubber(dates, {
     onChange: updateOpacity
 })
 
+// Create and add it into a container to ensure the scrubber shows up in an appropriate place (beneath the header and above the SVG plan) on the webpage 
 document.getElementById('scrubber-container').append(scrubber);
 
+// Function to handle the layout and data population of the floorplan
 async function floorplanLayout() {
+    // Fetch the structured dataset for the floor plan from the data route in the server
     const structuredData = await d3.json('/family-reunion/data');
+
     populateFloor(structuredData);
 
+    // Populate the SVG floorplan with the dataset
     function populateFloor(data) {
         const svg = d3.select("svg");
 
+        // Iterate through the rooms in the dataset
         for (const roomData of data.children) {
             var room = d3.select(`#rooms path[data-room="${roomData.name}"]`);
             if (!room.empty()) {
                 var roomDims = room.node().getBBox();
 
+                // Set the colors of the rectangles in the treemap.
+                // TODO: the colors could be changed, replaced by different gradients or images of posters, objects, etc.
                 const color = d3.scaleOrdinal(data.children.map(d => d.name), d3.schemeTableau10);
 
                 const root = d3.treemap()
@@ -75,6 +85,7 @@ async function floorplanLayout() {
                     .round(true)
                     (d3.hierarchy(roomData)
                         .sum(d => d.size)
+                        // TODO: The value could be changed from size into other attributes of the dataset
                         .sort((a, b) => b.value - a.value));
 
                 const leaf = svg.append("g")
@@ -90,12 +101,13 @@ async function floorplanLayout() {
                 leaf.append("rect")
                     .attr("id", d => (d.leafUid = DOM.uid("leaf")).id)
                     .attr("fill", d => { while (d.depth > 1) d = d.parent; return color(d.data.name); })
-                    .attr("fill-opacity", 0)
-                    .attr("data-begindate", d => d.data.begindate)
+                    .attr("fill-opacity", 0) // Set the default opacity as 0
+                    // Each rectangle has data-begindate and data-enddate attributes indicating its valid date range.
+                    .attr("data-begindate", d => d.data.begindate) 
                     .attr("data-enddate", d => d.data.enddate)
                     .attr("width", d => d.x1 - d.x0)
                     .attr("height", d => d.y1 - d.y0);
-                    {{!-- append mouse stuff --}}
+                    // TODO: could append mouse stuff here to show a close-up view
 
                 leaf.append("clipPath")
                     .attr("id", d => (d.clipUid = DOM.uid("clip")).id)
@@ -110,12 +122,18 @@ async function floorplanLayout() {
                     .attr("x", 3)
                     .attr("y", (d, i, nodes) => `${(i === nodes.length - 1) * 0.3 + 1.1 + i * 0.9}em`)
                     .attr("fill-opacity", (d, i, nodes) => i === nodes.length - 1 ? 0.7 : null)
-                    .text(d => d);
+                    {{!-- .text(d => d); --}} // TODO: could be commented out if the text is not needed and only the rectangles are needed 
             }
         }
     }
 }
 
+/**
+ * Update the opacity of the rectangles based on the provided date.
+ * Each rectangle has data-begindate and data-enddate attributes indicating its valid date range.
+ * Rectangles with valid dates within the specified range will have higher opacity (0.6). 
+ * The default opacity of other rectangles is 0.
+ */
 function updateOpacity(date) {
     d3.selectAll("rect").each(function() {
     const rect = d3.select(this);
@@ -133,7 +151,7 @@ function updateOpacity(date) {
 floorplanLayout();
 
 
-// Scrubber code from d3
+// Scrubber code copied and modified from d3 because the module is not importable 
 function Scrubber(values, {
     format = value => value,
     initial = 0,

@@ -29,7 +29,6 @@ router.get('/poster', async function(req, res, next) {
 
   for (let i = 0; i < exhibition.length; i++){
     // merge fields from exhibtions data with exhibition
-    exhibition[i].objectcount = exhibition_size.find(ex => ex.exhibitionid === exhibition[i].exhibitionid).objectcount;
 
     let begin = exhibition[i].begindate.split("-");
     exhibition[i].beginYear = parseInt(begin[0]);
@@ -80,6 +79,10 @@ router.get('/floor-3', async function(req, res, next) {
   }
 
   res.render('family-reunion/floor-3', {about: applicationInfo, data: exhibition});
+})
+
+router.get('/floor-3-dynamic', async function(req, res, next) {
+  res.render('family-reunion/floor-3-dynamic', {about: applicationInfo});
 })
 
 router.get('/data', async function(req, res, next) {
