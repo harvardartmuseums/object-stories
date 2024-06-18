@@ -7,7 +7,7 @@
             <p>
             {{#isTruthy data.pose}}
             {{#gt data.pose.Yaw 45}}
-            Gazing beyond what the frame confines in the far right, 
+            Gazing beyond what the frame confines in the far <mark>right</mark>, 
             I see ...
             {{else}}
                 {{#gt data.pose.Yaw -30}}
@@ -16,7 +16,7 @@
                     {{/lt}}
                 {{/gt}}
                 {{#lt data.pose.Yaw -45}}
-                Gazing beyond what the frame confines in the far left, 
+                Gazing beyond what the frame confines in the far <mark>left</mark>, 
                 I see ...
                 {{/lt}}
             {{/gt}}
