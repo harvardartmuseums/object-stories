@@ -10,6 +10,7 @@ var helpers = require('handlebars-helpers')({
 
 var indexRouter = require('./routes/index');
 var familyReunionRouter = require('./routes/family-reunion');
+var languageExplorerRouter = require('./routes/language-explorer');
 var dataRouter = require('./routes/data');
 
 var app = express();
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/family-reunion', familyReunionRouter);
+app.use('/language-of-ai', languageExplorerRouter);
 app.use('/data', dataRouter);
 
 // catch 404 and forward to error handler

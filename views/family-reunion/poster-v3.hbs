@@ -1,0 +1,29 @@
+<div class="row">
+    {{#each data}}
+        <div data-type="exhibition" data-id="{{this.id}}">
+            <span class="h2" style="color:transparent;display:inline-block;height:50px;background:{{poster.details.gradient}}">{{this.title}}</span>
+            <img class="d-none" src="{{poster.imageurl}}:IMAGE/square/50,50/0/default.jpg" alt="Poster image"> 
+            <div class="d-none">{{this.lead}} <a href="https://hvrd.art/e/{{this.id}}" target="_blank">Read more.</a></div>
+            {{!-- {{#each this.verbs}}
+                {{normal}}: {{count}}<br/>
+            {{/each}} --}}
+        </div>    
+        <div class="col-2 img-slide" data-beginYear="{{this.beginYear}}" data-beginMonth="{{this.beginMonth}}" data-endYear="{{this.endYear}}" data-endMonth="{{this.endMonth}}"></div>
+    {{/each}}
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        
+        function showExhibitionData() {
+            this.getElementsByTagName("img")[0].classList.remove('d-none');
+            this.getElementsByTagName("div")[0].classList.remove('d-none');
+            this.getElementsByTagName("span")[0].style.color = 'white';
+        }
+
+        let exhibitions = document.querySelectorAll("[data-type='exhibition']");
+        exhibitions.forEach(e => {
+            e.onclick = showExhibitionData;
+        })
+    });
+</script>

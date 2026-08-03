@@ -47,7 +47,7 @@ dates = Array.from({length: 121}, (_, i) => {
 });
 
 // Creating and configuring the scrubber (time slider)
-const scrubber = Scrubber(dates, {
+{{!-- const scrubber = Scrubber(dates, {
     delay: 200,
     loop: false,
     format: date => date.toLocaleString("en", {month: 'long', year: 'numeric'}),
@@ -55,7 +55,7 @@ const scrubber = Scrubber(dates, {
 })
 
 // Create and add it into a container to ensure the scrubber shows up in an appropriate place (beneath the header and above the SVG plan) on the webpage 
-document.getElementById('scrubber-container').append(scrubber);
+document.getElementById('scrubber-container').append(scrubber); --}}
 
 // Function to handle the layout and data population of the floorplan
 async function floorplanLayout() {
@@ -101,7 +101,7 @@ async function floorplanLayout() {
                 leaf.append("rect")
                     .attr("id", d => (d.leafUid = DOM.uid("leaf")).id)
                     .attr("fill", d => { while (d.depth > 1) d = d.parent; return color(d.data.name); })
-                    .attr("fill-opacity", 0) // Set the default opacity as 0
+                    .attr("fill-opacity", 1) // Set the default opacity as 0
                     // Each rectangle has data-begindate and data-enddate attributes indicating its valid date range.
                     .attr("data-begindate", d => d.data.begindate) 
                     .attr("data-enddate", d => d.data.enddate)
@@ -141,7 +141,7 @@ function updateOpacity(date) {
     const enddate = new Date(rect.attr("data-enddate"));
 
     if (date >= begindate && date <= enddate) {
-        rect.attr("fill-opacity", 0.6);
+        rect.attr("fill-opacity", 1.0);
     } else {
         rect.attr("fill-opacity", 0.1);
     }

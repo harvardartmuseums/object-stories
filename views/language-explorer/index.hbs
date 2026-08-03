@@ -1,0 +1,13 @@
+{{#each data}}
+<div class="row">
+    <div class="col-2">
+        <img class="img-fluid sticky-top" src="{{this.images.0.baseimageurl}}:IMAGE/full/100,/0/default.jpg">
+    </div>
+    <div class="col-6 overflow-auto h-50">
+            <div>
+                    <a href="/language-of-ai/{{this.id}}">{{this.title}}</a>
+            </div>
+    </div>
+</div>
+<hr>
+{{/each}}

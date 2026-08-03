@@ -1,0 +1,56 @@
+<div class="row">
+    {{#each data}}
+        <div class="col-2 img-slide" data-beginYear="{{this.beginYear}}" data-beginMonth="{{this.beginMonth}}" data-endYear="{{this.endYear}}" data-endMonth="{{this.endMonth}}">
+                <a href="{{url}}"><img src="{{this.poster.imageurl}}:IMAGE/full/!200,200/0/default.jpg" alt="Poster image"></a>
+        </div>
+    {{/each}}
+</div>
+
+<!-- Slider -->
+<div class="slider-container">
+    <input type="range" id="pi_input" min="0" max="120" step="1" value = "0" />
+    <p><output id="value">November 2014</output></p>
+</div>
+
+<!-- JavaScript to toggle images on and off based on the time in the slider -->
+<script>
+const value = document.querySelector("#value");
+const input = document.querySelector("#pi_input");
+const images = document.querySelectorAll('.img-slide');
+
+function getSliderMonthYear(sliderValue) {
+    const baseYear = 2014;
+    const baseMonth = 10;  
+    const date = new Date(baseYear, baseMonth + parseInt(sliderValue));
+    console.log("Calculated Date from Slider Value (" + sliderValue + "):", date);
+    return date;
+}
+
+function updateImages(month, year) {
+    images.forEach((img) => {
+        const beginYear = parseInt(img.getAttribute('data-beginYear'));
+        const endYear = parseInt(img.getAttribute('data-endYear'));
+        const beginMonth = parseInt(img.getAttribute('data-beginMonth')) - 1; 
+        const endMonth = parseInt(img.getAttribute('data-endMonth')) - 1;
+
+        img.style.opacity = '0.25'; // Hide the image
+        if ((year > beginYear || (year === beginYear && month >= beginMonth)) &&
+            (year < endYear || (year === endYear && month <= endMonth))) {
+            img.style.opacity = '1.0'; // Show the image
+        } else {
+        }
+    });
+}
+
+// Set initial images display based on the initial slider value
+let initialDate = getSliderMonthYear(parseInt(input.value));
+updateImages(initialDate.getMonth(), initialDate.getFullYear());
+
+// Update displayed images whenever the slider value changes
+input.addEventListener('input', (event) => {
+    const date = getSliderMonthYear(parseInt(event.target.value));
+    const options = { month: 'long', year: 'numeric' };
+    value.textContent = date.toLocaleDateString('en-US', options);
+    updateImages(date.getMonth(), date.getFullYear());
+});
+</script>

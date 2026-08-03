@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col-6">
+        <div class="sticky-top">
+        <img class="img-fluid" src="{{object.images.0.baseimageurl}}:IMAGE/full/800,/0/default.jpg">
+        <span>{{object.copyright}}</span>
+        <p><a href="{{object.url}}">Read more on the object page.</a></p>
+        </div>
+    </div>
+    <div class="col-6 overflow-auto h-50">
+        {{#each descriptions}}
+            {{@key}}
+            <div class="row">
+                {{#each this}}
+                <div class="col-6">
+                    <details>
+                        <summary>{{this.FS}}</summary>
+                        <div class="m-4">
+                            <p>{{this.Description}}</p>
+                            {{this.EnteredDate}}, {{this.Service}}
+                        </div>
+                    </details>
+                </div>
+                {{/each}}
+            </div>
+            <hr>
+        {{/each}}
+    </div>
+</div>
